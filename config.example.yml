@@ -1,0 +1,30 @@
+# Personio domain
+personio_url: https://yourcompany.personio.de
+
+# Optional Chrome DevTools Protocol port or URL to attach to an already running Chrome browser.
+# If set, ptrack connects directly to your existing browser session and avoids login prompts.
+# Example: 9222
+# cdp_port: 9222
+# cdp_url: http://localhost:9222
+
+# Playwright browser profile directory (used when cdp_port is not set).
+# Relative paths are resolved from this config file's location.
+user_data_dir: ./playwright_profile
+
+# Daily scheduled prompt time (24-hour format HH:MM)
+daily_prompt_time: "17:30"
+
+# Confirmation prompt type: "auto" (macOS native dialog on Mac, terminal fallback),
+# "dialog" (macOS native alert), or "terminal" (standard command line prompt)
+prompt_type: "auto"
+
+# ISO weekdays: 1=Monday, 2=Tuesday, ..., 5=Friday, 6=Saturday, 7=Sunday
+schedules:
+  - days: [1, 2, 3, 4]  # Monday to Thursday
+    intervals:
+      - {start: "09:00", end: "13:00"}
+      - {start: "14:00", end: "18:00"}
+
+  - days: [5]  # Friday
+    intervals:
+      - {start: "09:00", end: "15:30"}
