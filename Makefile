@@ -30,8 +30,8 @@ type-check: ## Launch the type checking tool
 test: ## Launch the tests
 	uv run pytest $(PYTEST_FLAGS) $(TEST_DIR)
 
-.PHONY: sync
-sync: ## Install dependencies using uv
+.PHONY: install
+install: ## Install dependencies using uv
 	uv sync
 
 .PHONY: help
