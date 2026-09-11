@@ -22,7 +22,7 @@ def parse_prompt_time(time_str: str) -> tuple[int, int]:
     try:
         parts = time_str.strip().split(":")
         return int(parts[0]), int(parts[1])
-    except Exception:
+    except (ValueError, IndexError):
         return 17, 30
 
 

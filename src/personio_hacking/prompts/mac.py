@@ -31,5 +31,5 @@ class MacPrompt(BasePrompt):
             if result.returncode != 0:
                 return False
             return "button returned:Track Now" in result.stdout
-        except Exception:
+        except (subprocess.SubprocessError, OSError):
             return False

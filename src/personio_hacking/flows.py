@@ -52,7 +52,7 @@ async def daily_flow(
         status = await check_day_status(page, today)
         if not status.is_working_day:
             print(
-                f"Today is marked as an off-day, holiday, or weekend in Personio. Skipping."
+                "Today is marked as an off-day, holiday, or weekend in Personio. Skipping."
             )
             return False
 

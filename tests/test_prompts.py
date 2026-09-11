@@ -1,9 +1,6 @@
 from unittest.mock import patch
 
-import pytest
-
 from personio_hacking.prompts import (
-    BasePrompt,
     MacPrompt,
     TerminalPrompt,
     get_prompt,

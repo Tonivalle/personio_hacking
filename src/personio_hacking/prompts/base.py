@@ -9,4 +9,3 @@ class BasePrompt(ABC):
     @abstractmethod
     def confirm(self, title: str, message: str, default: bool = True) -> bool:
         """Prompt user to confirm an action. Returns True if confirmed, False otherwise."""
-        pass
