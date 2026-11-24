@@ -12,27 +12,50 @@ It also supports attaching to an already-open Chrome browser window, so you neve
 
 ## Quickstart
 
-### 1. Install dependencies
-Make sure you have [uv](https://docs.astral.sh/uv/) installed. Then install the project dependencies:
+### 1. Install `ptrack`
+
+Install [uv](https://docs.astral.sh/uv/), then choose one of the following options.
+
+#### Option A: Install the release
+
+Install the wheel from the GitHub release:
 
 ```bash
+uv tool install --with-executables-from playwright https://github.com/Tonivalle/personio_hacking/releases/download/v0.2.0/personio_hacking-0.2.0-py3-none-any.whl
+```
+
+This installs `ptrack`, `personio-track`, and the matching `playwright` command. If the commands are not on your PATH, run `uv tool update-shell` and restart your shell.
+
+If you plan to use standalone browser sessions, install Chromium:
+
+```bash
+playwright install chromium
+```
+
+#### Option B: Clone the repository
+
+```bash
+git clone https://github.com/Tonivalle/personio_hacking.git
+cd personio_hacking
 uv sync
 ```
 
-Install Playwright browser binaries if you plan to use standalone browser sessions:
+For standalone browser sessions, install Chromium:
 
 ```bash
 uv run playwright install chromium
 ```
 
+Run the examples below from the checkout with `uv run` before each command, for example `uv run ptrack daily`.
+
 ### 2. Configure your schedule
-Copy the example configuration to `config.yml`:
+Create a configuration directory:
 
 ```bash
-cp config.example.yml config.yml
+mkdir -p ~/.config/ptrack
 ```
 
-Edit `config.yml` with your company domain and hours:
+Create `~/.config/ptrack/config.yml` with your company domain and hours:
 
 ```yaml
 # Your company Personio URL
@@ -56,7 +79,7 @@ schedules:
       - {start: "09:00", end: "15:30"}
 ```
 
-> **Note on privacy**: `config.yml` is ignored by Git, so your company link and personal schedules will never be committed or shared.
+`ptrack` also accepts `config.yml` in the current directory or an explicit `--config` path. Keep your configuration and browser profile private; the repository's `.gitignore` only protects files inside a Git checkout.
 
 ---
 
@@ -88,31 +111,31 @@ Whenever `cdp_port` is set:
 - Since you are already signed in to Okta in your everyday browser, it fills your attendance with zero login prompts.
 - When finished, it disconnects cleanly and leaves your Chrome window open.
 
-If `cdp_port` is omitted or commented out, `ptrack` automatically falls back to a standalone persistent profile saved in `./playwright_profile`.
+If `cdp_port` is omitted or commented out, `ptrack` automatically falls back to a standalone persistent profile saved in `playwright_profile` next to the configuration file.
 
 ---
 
 ## CLI Usage
 
-You can run commands using `uv run ptrack` (or `uv run personio-track`):
+You can run commands using `ptrack` (or `personio-track`):
 
 ### 1. Daily tracking
 Checks today's date against your schedule. If today is a working day, a system dialog pops up showing your hours:
 
 ```bash
-uv run ptrack daily
+ptrack daily
 ```
 
 To run non-interactively (for automated scripts or headless workflows):
 ```bash
-uv run ptrack daily --yes
+ptrack daily --yes
 ```
 
 ### 2. Backfill missing days
 Scans all working days of the current month and fills any unfilled days in bulk:
 
 ```bash
-uv run ptrack backfill
+ptrack backfill
 ```
 
 ### 3. Automatic Daily Scheduling on macOS (`launchd`)
@@ -120,23 +143,25 @@ You can set up macOS to automatically trigger the daily reminder at your configu
 
 - **Install the schedule**:
   ```bash
-  uv run ptrack schedule install
+  ptrack schedule install
   ```
   This creates a background launch agent in `~/Library/LaunchAgents/com.ptrack.daily.plist` that triggers every workday at the time defined in `config.yml`. When the time comes, a dialog appears asking if you want to track today. Click **Track Now** and you are done.
 
 - **Check schedule status**:
   ```bash
-  uv run ptrack schedule status
+  ptrack schedule status
   ```
 
 - **Remove the schedule**:
   ```bash
-  uv run ptrack schedule uninstall
+  ptrack schedule uninstall
   ```
 
 ---
 
 ## Development and Testing
+
+In a repository checkout, install development dependencies with `uv sync`.
 
 Run test suite:
 ```bash
