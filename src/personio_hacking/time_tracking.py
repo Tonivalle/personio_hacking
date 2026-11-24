@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date
 
 from playwright.async_api import Page
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
@@ -92,7 +92,7 @@ async def _get_missing_workday_dates(page: Page, today: date) -> list[date]:
         if not datetime_str:
             continue
         try:
-            row_date = date.fromisoformat(datetime_str) + timedelta(days=1)
+            row_date = date.fromisoformat(datetime_str)
         except ValueError:
             continue
 

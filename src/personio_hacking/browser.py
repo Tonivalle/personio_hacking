@@ -14,6 +14,7 @@ from playwright.async_api import (
 )
 
 from personio_hacking.config import Config
+from personio_hacking.login import is_logged_in_url
 
 
 @dataclass
@@ -71,7 +72,9 @@ async def get_browser_session(config: Config) -> BrowserSession:
         # Check if any tab already has Personio open
         target_page: Page | None = None
         for p in context.pages:
-            if config.personio_url in p.url:
+            if config.personio_url in p.url or is_logged_in_url(
+                p.url, config.personio_url
+            ):
                 target_page = p
                 break
 

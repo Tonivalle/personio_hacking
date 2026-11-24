@@ -29,7 +29,7 @@ class Config:
     confirm: bool = False
     cdp_port: int | None = None
     cdp_url: str | None = None
-    daily_prompt_time: str = "17:30"
+    daily_prompt_time: str = "9:30"
     prompt_type: str = "auto"
 
     def get_schedule_for_weekday(self, iso_weekday: int) -> DaySchedule | None:
@@ -101,6 +101,6 @@ def load_config(path: Path | str) -> Config:
         confirm=bool(raw.get("confirm", False)),
         cdp_port=cdp_port,
         cdp_url=cdp_url,
-        daily_prompt_time=str(raw.get("daily_prompt_time", "17:30")),
+        daily_prompt_time=str(raw.get("daily_prompt_time", "9:30")),
         prompt_type=str(raw.get("prompt_type", "auto")),
     )

@@ -12,7 +12,7 @@ personio_url: https://yourcompany.personio.de
 user_data_dir: ./playwright_profile
 
 # Daily scheduled prompt time (24-hour format HH:MM)
-daily_prompt_time: "17:30"
+daily_prompt_time: "9:00"
 
 # Confirmation prompt type: "auto" (macOS native dialog on Mac, terminal fallback),
 # "dialog" (macOS native alert), or "terminal" (standard command line prompt)

@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date
 from typing import TYPE_CHECKING
+from urllib.parse import urljoin
 
 from playwright.async_api import Page
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
@@ -38,19 +39,17 @@ def format_schedule_summary(schedule: DaySchedule) -> str:
 
 
 def get_attr_date_str(target_date: date) -> str:
-    """
-    Personio's datetime attribute is 0-indexed (day 0 = 1st of month),
-    so the HTML attribute is always 1 day behind the displayed date.
-    """
-    return (target_date - timedelta(days=1)).isoformat()
+    """Format target_date to match Personio's timesheet datetime attribute (YYYY-MM-DD)."""
+    return target_date.isoformat()
 
 
 async def navigate_to_attendance(page: Page, personio_url: str) -> None:
     """Navigate directly to the Attendance calendar view."""
     attendance = page.locator(NAV_ATTENDANCE)
     await attendance.wait_for(state="attached", timeout=TIMEOUT)
-    href = await attendance.get_attribute("href")
-    await page.goto(f"{personio_url}{href}")
+    href = await attendance.get_attribute("href") or ""
+    target_url = urljoin(page.url or personio_url, href)
+    await page.goto(target_url)
     await page.locator(TIMECARD_ROW).first.wait_for(state="visible", timeout=TIMEOUT)
 
 
@@ -144,6 +143,7 @@ async def fill_dialog_schedule(page: Page, schedule: DaySchedule) -> None:
 
     save_btn = page.locator(DIALOG_SAVE)
     await save_btn.click()
+    await page.locator(DIALOG).wait_for(state="hidden", timeout=TIMEOUT)
 
 
 async def select_days_and_track(

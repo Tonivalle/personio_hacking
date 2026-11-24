@@ -80,7 +80,7 @@ schedules: []
         confirm=False,
         cdp_port=9222,
         cdp_url="http://localhost:9222",
-        daily_prompt_time="17:30",
+        daily_prompt_time="9:30",
         prompt_type="auto",
     )
     assert config == expected
